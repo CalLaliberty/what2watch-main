@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { OmdbMovie } from "@/app/interfaces/OmdbMovie"; // adjust path as needed
+
+// Interface Imports
+import { OmdbMovie } from "@/app/interfaces/OmdbMovie";
+// Swiper Imports
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+// Component Imports
+import LoadingSpinner from "@/app/ui/loadingSpinner";
 
 const trendingTitles = [
   "The Fantastic Four: First Steps",
@@ -52,17 +57,17 @@ export default function TrendingNow() {
   }, []);
 
   return (
-    <section className="w-full px-4 py-12 sm:py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+    <section className=" w-full px-4 pt-0 pb-12 sm:pb-20 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 border-t border-gray-700">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl md:text-5xl font-bold mb-6">Trending Now</h2>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6 mt-10">
+          Trending Now
+        </h2>
         <p className="text-lg md:text-xl text-gray-300 mb-10">
           Stay updated with the latest trends in movies and TV shows.
         </p>
 
         {loading ? (
-          <p className="text-gray-400 text-center">
-            Loading trending titles...
-          </p>
+          <LoadingSpinner />
         ) : (
           <Swiper
             spaceBetween={24}
@@ -82,13 +87,17 @@ export default function TrendingNow() {
             {movies.map((movie, index) => (
               <SwiperSlide key={movie.imdbID}>
                 <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition hover:scale-105 duration-300 flex flex-col h-[520px]">
-                  <img
-                    src={
-                      movie.Poster !== "N/A" ? movie.Poster : "/placeholder.jpg"
-                    }
-                    alt={movie.Title}
-                    className="w-full h-64 object-cover flex-shrink-0"
-                  />
+                  <div className="w-full h-64 overflow-hidden bg-black flex items-center justify-center">
+                    <img
+                      src={
+                        movie.Poster !== "N/A"
+                          ? movie.Poster
+                          : "/placeholder.jpg"
+                      }
+                      alt={movie.Title}
+                      className="h-full object-cover"
+                    />
+                  </div>
                   <div className="p-5 flex flex-col flex-grow overflow-hidden">
                     <h3 className="text-xl font-bold mb-1 truncate">
                       {index + 1}. {movie.Title}
@@ -105,21 +114,6 @@ export default function TrendingNow() {
             ))}
           </Swiper>
         )}
-
-        <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
-          <a
-            href="/trending"
-            className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-600 transition"
-          >
-            View Trending
-          </a>
-          <a
-            href="/popular"
-            className="inline-block border border-blue-500 text-blue-500 px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 hover:text-white transition"
-          >
-            See Popular
-          </a>
-        </div>
       </div>
     </section>
   );

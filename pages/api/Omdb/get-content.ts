@@ -21,6 +21,8 @@ export default async function handler(
     );
 
     if (!response.ok) {
+      console.error("Failed to fetch from OMDB");
+      console.log("Response status:", response.status);
       res.status(500).json({ error: "Failed to fetch from OMDB" });
       return;
     }
@@ -28,6 +30,8 @@ export default async function handler(
     const data = await response.json();
     res.status(200).json(data);
   } catch (error) {
+    console.error("Unexpected error:", error);
+    console.log("Error details:", error);
     res.status(500).json({ error: "Unexpected error" });
   }
 }

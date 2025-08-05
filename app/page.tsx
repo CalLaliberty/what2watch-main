@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <div>
       <MainNavigation />
-      <TrendingNow />
       <LandingComponent />
       <MainFooter />
     </div>

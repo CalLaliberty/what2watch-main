@@ -14,9 +14,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "What2Watch",
-  description: "Discover movies and TV shows, and find where to stream, rent, or buy them. Powered by Next.js, Node.js, Supabase, and OMDb.",
+  description:
+    "Discover movies and TV shows, and find where to stream, rent, or buy them. Powered by Next.js, Node.js, Supabase, and OMDb.",
+  icons: {
+    icon: "/images/icon.png",
+  },
 };
-
 
 export default function RootLayout({
   children,
