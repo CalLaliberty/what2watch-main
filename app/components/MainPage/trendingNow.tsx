@@ -1,53 +1,49 @@
 "use client";
 
+// TrendingNow.tsx
+// React imports
 import React, { useEffect, useState } from "react";
-
-// Interface Imports
-import { OmdbMovie } from "@/app/interfaces/OmdbMovie";
-// Swiper Imports
+import Image from "next/image";
+// Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// Component Imports
+// UI imports
 import LoadingSpinner from "@/app/ui/loadingSpinner";
 
-const trendingTitles = [
-  "The Fantastic Four: First Steps",
-  "Ballerina",
-  "Mission: Impossible - The Final Reckoning",
-  "F1: The Movie",
-  "Sinners",
-  "Stranger Things",
-  "Happy Gilmore 2",
-  "Jurassic World: Rebirth",
-  "Andor",
-  "The White Lotus",
-];
+interface TMDBItem {
+  id: number;
+  title?: string;
+  name?: string;
+  release_date?: string;
+  first_air_date?: string;
+  overview: string;
+  poster_path: string | null;
+  media_type: "movie" | "tv";
+}
 
 export default function TrendingNow() {
-  const [movies, setMovies] = useState<OmdbMovie[]>([]);
+  const [movies, setMovies] = useState<TMDBItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTrending = async () => {
       try {
-        const results: OmdbMovie[] = [];
+        const res = await fetch("/api/tmdb/trending");
+        const data = await res.json();
 
-        for (const title of trendingTitles) {
-          const res = await fetch(
-            `/api/Omdb/get-content?title=${encodeURIComponent(title)}`
-          );
-          const data: OmdbMovie = await res.json();
-          if (data.Response === "True") {
-            results.push(data);
-          }
+        if (Array.isArray(data)) {
+          setMovies(data);
+        } else if (Array.isArray(data.results)) {
+          setMovies(data.results);
+        } else {
+          console.error("Unexpected TMDB response:", data);
+          setMovies([]);
         }
-
-        setMovies(results);
       } catch (err) {
-        console.error("Failed to fetch trending content", err);
+        console.error("Failed to fetch trending data", err);
       } finally {
         setLoading(false);
       }
@@ -57,7 +53,7 @@ export default function TrendingNow() {
   }, []);
 
   return (
-    <section className=" w-full px-4 pt-0 pb-12 sm:pb-20 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 border-t border-gray-700">
+    <section className="w-full px-4 pt-0 pb-12 sm:pb-20 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 border-t border-gray-700">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-3xl md:text-5xl font-bold mb-6 mt-10">
           Trending Now
@@ -85,28 +81,36 @@ export default function TrendingNow() {
             className="pb-10"
           >
             {movies.map((movie, index) => (
-              <SwiperSlide key={movie.imdbID}>
+              <SwiperSlide key={movie.id}>
                 <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition hover:scale-105 duration-300 flex flex-col h-[520px]">
-                  <div className="w-full h-64 overflow-hidden bg-black flex items-center justify-center">
-                    <img
+                  <div className="relative w-full h-64 bg-black flex items-center justify-center">
+                    <Image
                       src={
-                        movie.Poster !== "N/A"
-                          ? movie.Poster
+                        movie.poster_path
+                          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                           : "/placeholder.jpg"
                       }
-                      alt={movie.Title}
-                      className="h-full object-cover"
+                      alt={movie.title || movie.name || "Trending Item"}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      style={{ objectFit: "contain", objectPosition: "top" }}
+                      priority={index < 3}
                     />
                   </div>
                   <div className="p-5 flex flex-col flex-grow overflow-hidden">
                     <h3 className="text-xl font-bold mb-1 truncate">
-                      {index + 1}. {movie.Title}
+                      {index + 1}. {movie.title || movie.name}
                     </h3>
-                    <p className="text-sm text-gray-400 mb-2">
-                      {movie.Year} • {movie.Type}
+                    <p className="text-sm text-gray-400 mb-2 capitalize">
+                      {movie.media_type} •{" "}
+                      {movie.release_date || movie.first_air_date || "N/A"}
                     </p>
                     <p className="text-sm text-gray-300 overflow-auto">
-                      {movie.Plot}
+                      {movie.first_air_date || movie.release_date
+                        ? movie.overview.length > 150
+                          ? movie.overview.slice(0, 150) + "..."
+                          : movie.overview
+                        : "No description available."}
                     </p>
                   </div>
                 </div>

@@ -1,3 +1,5 @@
+// interfaces/OmdbMovie.ts
+// This file defines the TypeScript interface for an OMDB movie object.
 export interface OmdbMovie {
   Title: string;
   Year: string;

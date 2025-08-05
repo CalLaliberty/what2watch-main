@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+// LandingComponent.tsx
+// React imports
+import React from "react";
 import Link from "next/link";
 
 // Component Imports
