@@ -19,7 +19,7 @@ export default function MainNavigation() {
       {/* Logo placeholder */}
       <div className="w-[65px] h-[65px] rounded-full bg-white overflow-hidden flex items-center justify-center">
         <Image
-          src="/What2WatchLogo-removebg.png"
+          src="/images/What2WatchLogo-RMBG.png"
           alt="Logo"
           width={65}
           height={65}
