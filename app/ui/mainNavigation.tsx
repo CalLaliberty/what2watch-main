@@ -11,13 +11,13 @@ export default function MainNavigation() {
 
   return (
     <nav
-      className="border-b border-white/30 px-4 py-2 flex items-center justify-between text-white"
+      className="border-b border-gray-700 px-4 py-2 flex items-center justify-between text-gray-100"
       style={{
-        background: "linear-gradient(to bottom right, #1884fa, #8ed0ca)",
+        background: "linear-gradient(to bottom right, #0d1b2a, #1b263b)",
       }}
     >
       {/* Logo placeholder */}
-      <div className="w-[65px] h-[65px] rounded-full bg-white overflow-hidden flex items-center justify-center">
+      <div className="w-[65px] h-[65px] rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
         <Image
           src="/images/What2WatchLogo-RMBG.png"
           alt="Logo"
@@ -30,14 +30,17 @@ export default function MainNavigation() {
       {/* Desktop Menu */}
       <ul className="hidden md:flex space-x-6 items-center">
         <li>
-          <Link href="/" className="text-white hover:text-gray-200 transition">
+          <Link
+            href="/"
+            className="text-gray-100 hover:text-gray-300 transition"
+          >
             Home
           </Link>
         </li>
         <li>
           <Link
             href="/about"
-            className="text-white hover:text-gray-200 transition"
+            className="text-gray-100 hover:text-gray-300 transition"
           >
             About
           </Link>
@@ -51,7 +54,7 @@ export default function MainNavigation() {
         aria-label="Toggle menu"
       >
         <svg
-          className="h-6 w-6 text-white"
+          className="h-6 w-6 text-gray-100"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -68,15 +71,15 @@ export default function MainNavigation() {
       {/* Mobile Menu */}
       {menuOpen && (
         <ul
-          className="absolute top-14 left-0 w-full bg-gradient-to-br from-blue-600 to-teal-300 text-white border-t border-white/30 flex flex-col items-center md:hidden z-10 mt-6"
+          className="absolute top-14 left-0 w-full text-gray-100 border-t border-gray-700 flex flex-col items-center md:hidden z-10 mt-6"
           style={{
-            background: "linear-gradient(to bottom right, #1884fa, #8ed0ca)",
+            background: "linear-gradient(to bottom right, #0d1b2a, #1b263b)",
           }}
         >
           <li className="w-full text-center py-2">
             <Link
               href="/"
-              className="block hover:text-gray-200 transition"
+              className="block hover:text-gray-300 transition"
               onClick={() => setMenuOpen(false)}
             >
               Home
@@ -85,7 +88,7 @@ export default function MainNavigation() {
           <li className="w-full text-center py-2">
             <Link
               href="/about"
-              className="block hover:text-gray-200 transition"
+              className="block hover:text-gray-300 transition"
               onClick={() => setMenuOpen(false)}
             >
               About

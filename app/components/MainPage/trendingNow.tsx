@@ -22,6 +22,58 @@ interface TMDBItem {
   overview: string;
   poster_path: string | null;
   media_type: "movie" | "tv";
+  vote_average?: number;
+}
+
+function RatingCircle({ rating }: { rating: number }) {
+  const radius = 25;
+  const stroke = 4;
+  const normalizedRadius = radius - stroke * 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (rating / 10) * circumference;
+
+  let strokeColor = "#22c55e"; // green
+  if (rating < 5) strokeColor = "#ef4444"; // red
+  else if (rating < 7) strokeColor = "#f59e0b"; // orange
+
+  return (
+    <svg height={radius * 2} width={radius * 2}>
+      {/* Background circle */}
+      <circle
+        stroke="#334155"
+        fill="transparent"
+        strokeWidth={stroke}
+        r={normalizedRadius}
+        cx={radius}
+        cy={radius}
+      />
+      {/* Progress circle */}
+      <circle
+        stroke={strokeColor}
+        fill="transparent"
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeDasharray={`${circumference} ${circumference}`}
+        strokeDashoffset={strokeDashoffset}
+        r={normalizedRadius}
+        cx={radius}
+        cy={radius}
+        style={{ transition: "stroke-dashoffset 0.35s" }}
+      />
+      {/* Text showing percentage */}
+      <text
+        x="50%"
+        y="50%"
+        dy="0.3em"
+        textAnchor="middle"
+        fontSize="12"
+        fill="#f8fafc"
+        fontWeight="bold"
+      >
+        {(rating * 10).toFixed(0)}%
+      </text>
+    </svg>
+  );
 }
 
 export default function TrendingNow() {
@@ -96,6 +148,11 @@ export default function TrendingNow() {
                       style={{ objectFit: "contain", objectPosition: "top" }}
                       priority={index < 3}
                     />
+                    {typeof movie.vote_average === "number" && (
+                      <div className="absolute top-3 right-3 bg-gray-900 bg-opacity-70 rounded-full p-1">
+                        <RatingCircle rating={movie.vote_average} />
+                      </div>
+                    )}
                   </div>
                   <div className="p-5 flex flex-col flex-grow overflow-hidden">
                     <h3 className="text-xl font-bold mb-1 truncate">
