@@ -7,7 +7,7 @@ import Link from "next/link";
 
 // Component Imports
 import TrendingNow from "./trendingNow";
-
+import { MovieSearchBar } from "@/app/ui/mainSearchBar";
 export default function LandingComponent() {
   return (
     <>
@@ -16,6 +16,7 @@ export default function LandingComponent() {
           <h1 className="text-3xl md:text-5xl font-bold mb-6">
             Discover What to Watch Next
           </h1>
+          <MovieSearchBar />
           <p className="text-lg md:text-xl text-gray-300 mb-8">
             What2Watch helps you find the perfect movie or TV show to stream,
             rent, or buy — all in one place.
