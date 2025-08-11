@@ -17,14 +17,16 @@ export default function MainNavigation() {
       }}
     >
       {/* Logo placeholder */}
-      <div className="w-[65px] h-[65px] rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
-        <Image
-          src="/images/What2WatchLogo-RMBG.png"
-          alt="Logo"
-          width={65}
-          height={65}
-          className="object-contain"
-        />
+      <div className="w-[65px] h-[65px]  overflow-hidden flex items-center justify-center">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/images/logo.png"
+            alt="Logo"
+            width={65}
+            height={65}
+            className="object-contain"
+          />
+        </Link>
       </div>
 
       {/* Desktop Menu */}

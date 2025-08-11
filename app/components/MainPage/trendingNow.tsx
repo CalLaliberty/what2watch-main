@@ -4,6 +4,7 @@
 // React imports
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -134,43 +135,45 @@ export default function TrendingNow() {
           >
             {movies.map((movie, index) => (
               <SwiperSlide key={movie.id}>
-                <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition hover:scale-105 duration-300 flex flex-col h-[520px]">
-                  <div className="relative w-full h-64 bg-black flex items-center justify-center">
-                    <Image
-                      src={
-                        movie.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                          : "/placeholder.jpg"
-                      }
-                      alt={movie.title || movie.name || "Trending Item"}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      style={{ objectFit: "contain", objectPosition: "top" }}
-                      priority={index < 3}
-                    />
-                    {typeof movie.vote_average === "number" && (
-                      <div className="absolute top-3 right-3 bg-gray-900 bg-opacity-70 rounded-full p-1">
-                        <RatingCircle rating={movie.vote_average} />
-                      </div>
-                    )}
+                <Link href={`/${movie.id}`} className="block h-full">
+                  <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition hover:scale-105 duration-300 flex flex-col h-[520px]">
+                    <div className="relative w-full h-64 bg-black flex items-center justify-center">
+                      <Image
+                        src={
+                          movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                            : "/placeholder.jpg"
+                        }
+                        alt={movie.title || movie.name || "Trending Item"}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        style={{ objectFit: "contain", objectPosition: "top" }}
+                        priority={index < 3}
+                      />
+                      {typeof movie.vote_average === "number" && (
+                        <div className="absolute top-3 right-3 bg-gray-900 bg-opacity-70 rounded-full p-1">
+                          <RatingCircle rating={movie.vote_average} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col flex-grow overflow-hidden">
+                      <h3 className="text-xl font-bold mb-1 truncate">
+                        {index + 1}. {movie.title || movie.name}
+                      </h3>
+                      <p className="text-sm text-gray-400 mb-2 capitalize">
+                        {movie.media_type} •{" "}
+                        {movie.release_date || movie.first_air_date || "N/A"}
+                      </p>
+                      <p className="text-sm text-gray-300 overflow-auto">
+                        {movie.first_air_date || movie.release_date
+                          ? movie.overview.length > 150
+                            ? movie.overview.slice(0, 150) + "..."
+                            : movie.overview
+                          : "No description available."}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-5 flex flex-col flex-grow overflow-hidden">
-                    <h3 className="text-xl font-bold mb-1 truncate">
-                      {index + 1}. {movie.title || movie.name}
-                    </h3>
-                    <p className="text-sm text-gray-400 mb-2 capitalize">
-                      {movie.media_type} •{" "}
-                      {movie.release_date || movie.first_air_date || "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-300 overflow-auto">
-                      {movie.first_air_date || movie.release_date
-                        ? movie.overview.length > 150
-                          ? movie.overview.slice(0, 150) + "..."
-                          : movie.overview
-                        : "No description available."}
-                    </p>
-                  </div>
-                </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

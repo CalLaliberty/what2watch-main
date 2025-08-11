@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { FiSearch, FiX, FiLoader } from "react-icons/fi";
 
 interface Movie {
@@ -70,12 +71,6 @@ export function MovieSearchBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function onSelect(movie: Movie) {
-    setQuery(movie.Title);
-    setShowDropdown(false);
-    console.log("Selected movie:", movie);
-  }
-
   function clearInput() {
     setQuery("");
     setResults([]);
@@ -128,12 +123,13 @@ export function MovieSearchBar() {
           )}
           <ul>
             {results.map((movie) => (
-              <li
-                key={movie.imdbID}
-                className="cursor-pointer px-4 py-2 hover:bg-blue-600 hover:text-white"
-                onClick={() => onSelect(movie)}
-              >
-                <div className="flex items-center gap-3">
+              <li key={movie.imdbID} className="px-4 py-2">
+                <Link
+                  href={`/${movie.imdbID}`}
+                  className="flex items-center gap-3 hover:bg-blue-600 hover:text-white rounded-md p-2"
+                  onClick={() => setShowDropdown(false)} // optionally close dropdown on click
+                  tabIndex={0} // for accessibility
+                >
                   {movie.Poster !== "N/A" ? (
                     <div className="relative w-14 h-20 flex-shrink-0 rounded-sm overflow-hidden bg-gray-700">
                       <Image
@@ -154,7 +150,7 @@ export function MovieSearchBar() {
                     <p className="font-medium text-gray-200">{movie.Title}</p>
                     <p className="text-xs text-gray-400">{movie.Year}</p>
                   </div>
-                </div>
+                </Link>
               </li>
             ))}
           </ul>
