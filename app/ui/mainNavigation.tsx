@@ -40,6 +40,12 @@ export default function MainNavigation() {
         >
           About
         </Link>
+        <Link
+          href="/discover"
+          className="text-gray-100 hover:text-gray-300 transition"
+        >
+          Discover
+        </Link>
       </div>
 
       {/* Mobile Hamburger */}
@@ -88,6 +94,15 @@ export default function MainNavigation() {
                 onClick={() => setMenuOpen(false)}
               >
                 About
+              </Link>
+            </li>
+            <li className="w-full text-center py-2">
+              <Link
+                href="/discover"
+                className="block hover:text-gray-300 transition"
+                onClick={() => setMenuOpen(false)}
+              >
+                Discover
               </Link>
             </li>
           </ul>
