@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import HeroBanner from "./componets/heroBanner";
 
 interface CastMember {
   id: number;
@@ -10,18 +11,15 @@ interface CastMember {
 
 interface Details {
   id: number;
-  title?: string;
-  name?: string; // TV shows use name
+  name: string;
   overview: string;
   backdrop_path: string | null;
   poster_path: string | null;
   vote_average: number;
   vote_count: number;
   genres: { id: number; name: string }[];
-  release_date?: string;
   first_air_date?: string;
-  runtime?: number; // movies
-  episode_run_time?: number[]; // TV shows
+  episode_run_time?: number[];
   credits: {
     cast: CastMember[];
   };
@@ -34,7 +32,7 @@ interface Details {
   };
 }
 
-export default async function MoviePage({
+export default async function SeriesPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -42,53 +40,43 @@ export default async function MoviePage({
   const API_KEY = process.env.TMDB!;
   const { id } = await params;
 
-  // Fetch movie details or fallback to TV show
-  let detailsRes = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=credits,videos`,
+  // Fetch TV show details from TMDB API
+  const res = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&append_to_response=credits,videos`,
     { next: { revalidate: 3600 } }
   );
 
-  let isMovie = true;
-
-  if (detailsRes.status === 404) {
-    detailsRes = await fetch(
-      `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&append_to_response=credits,videos`,
-      { next: { revalidate: 3600 } }
-    );
-    isMovie = false;
-  }
-
-  if (!detailsRes.ok) {
+  if (!res.ok) {
     return (
       <div className="p-6 text-center text-red-500">
-        Failed to load details for id: {id}
+        Failed to load series details for id: {id}
       </div>
     );
   }
 
-  const details: Details = await detailsRes.json();
+  const details: Details = await res.json();
 
   const trailer = details.videos.results.find(
     (vid) => vid.type === "Trailer" && vid.site === "YouTube"
   );
 
-  const date = isMovie ? details.release_date : details.first_air_date;
-  const runtime = isMovie ? details.runtime : details.episode_run_time?.[0];
+  const date = details.first_air_date;
+  const runtime = details.episode_run_time?.[0];
 
   return (
-    <div className="movie-page">
-      {/* <HeroBanner
+    <div className="series-page">
+      <HeroBanner
         backdropPath={details.backdrop_path}
         rating={details.vote_average}
-      /> */}
-      <main className="movie-details">
+      />
+      <main className="series-details">
         {/* Poster */}
         {details.poster_path && (
-          <div className="movie-poster">
+          <div className="series-poster">
             <Image
               src={`https://image.tmdb.org/t/p/w342${details.poster_path}`}
-              alt={details.title || details.name || "Poster"}
-              width={272} // w342 ratio approx 272x408 (2:3)
+              alt={details.name || "Poster"}
+              width={272}
               height={408}
               className="rounded-lg object-cover"
               priority
@@ -98,7 +86,7 @@ export default async function MoviePage({
 
         {/* Details */}
         <section className="details-text">
-          <h1 className="title">{details.title || details.name}</h1>
+          <h1 className="title">{details.name}</h1>
 
           <p className="rating">
             ⭐ {details.vote_average.toFixed(1)} / 10 ({details.vote_count}{" "}
@@ -117,7 +105,7 @@ export default async function MoviePage({
                   day: "numeric",
                 })
               : "Unknown release date"}{" "}
-            • {runtime ? `${runtime} min` : "Runtime N/A"}
+            • {runtime ? `${runtime} min per episode` : "Runtime N/A"}
           </p>
 
           <p className="overview">{details.overview}</p>
@@ -136,7 +124,7 @@ export default async function MoviePage({
                     <Image
                       src={`https://image.tmdb.org/t/p/w185${cast.profile_path}`}
                       alt={cast.name}
-                      width={112} // w185 ratio approx 112x180 (7:11.25)
+                      width={112}
                       height={180}
                       className="cast-photo"
                       loading="lazy"
@@ -158,7 +146,7 @@ export default async function MoviePage({
               <div className="trailer-video">
                 <iframe
                   src={`https://www.youtube.com/embed/${trailer.key}`}
-                  title={`${details.title || details.name} Trailer`}
+                  title={`${details.name} Trailer`}
                   allowFullScreen
                 />
               </div>

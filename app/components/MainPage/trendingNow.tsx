@@ -135,7 +135,12 @@ export default function TrendingNow() {
           >
             {movies.map((movie, index) => (
               <SwiperSlide key={movie.id}>
-                <Link href={`/${movie.id}`} className="block h-full">
+                <Link
+                  href={`/${
+                    movie.media_type === "movie" ? "movie" : "series"
+                  }/${movie.id}`}
+                  className="block h-full"
+                >
                   <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition hover:scale-105 duration-300 flex flex-col h-[520px]">
                     <div className="relative w-full h-64 bg-black flex items-center justify-center">
                       <Image

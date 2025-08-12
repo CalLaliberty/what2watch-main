@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import HeroBanner from "./componets/heroBanner";
 
 interface CastMember {
   id: number;
@@ -77,10 +78,10 @@ export default async function MoviePage({
 
   return (
     <div className="movie-page">
-      {/* <HeroBanner
+      <HeroBanner
         backdropPath={details.backdrop_path}
         rating={details.vote_average}
-      /> */}
+      />
       <main className="movie-details">
         {/* Poster */}
         {details.poster_path && (

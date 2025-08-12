@@ -10,6 +10,7 @@ interface Movie {
   Title: string;
   Year: string;
   Poster: string;
+  mediaType: "movie" | "series";
 }
 
 export function MovieSearchBar() {
@@ -28,7 +29,7 @@ export function MovieSearchBar() {
     setIsLoading(true);
     try {
       const res = await fetch(
-        `/api/Omdb/search-content?search=${encodeURIComponent(searchTerm)}`
+        `/api/tmdb/search-content?search=${encodeURIComponent(searchTerm)}`
       );
 
       if (!res.ok) throw new Error("API error");
@@ -125,10 +126,12 @@ export function MovieSearchBar() {
             {results.map((movie) => (
               <li key={movie.imdbID} className="px-4 py-2">
                 <Link
-                  href={`/${movie.imdbID}`}
+                  href={`/${movie.mediaType === "movie" ? "movie" : "series"}/${
+                    movie.imdbID
+                  }`}
                   className="flex items-center gap-3 hover:bg-blue-600 hover:text-white rounded-md p-2"
-                  onClick={() => setShowDropdown(false)} // optionally close dropdown on click
-                  tabIndex={0} // for accessibility
+                  onClick={() => setShowDropdown(false)}
+                  tabIndex={0}
                 >
                   {movie.Poster !== "N/A" ? (
                     <div className="relative w-14 h-20 flex-shrink-0 rounded-sm overflow-hidden bg-gray-700">

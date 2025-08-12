@@ -27,11 +27,6 @@ export default function LandingComponent() {
                 Start Exploring
               </span>
             </Link>
-            <Link href="/about">
-              <span className="inline-block border border-blue-500 text-blue-500 px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 hover:text-white transition">
-                Learn More
-              </span>
-            </Link>
           </div>
         </div>
       </section>

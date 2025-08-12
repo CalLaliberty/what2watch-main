@@ -273,3 +273,137 @@
     }
   }
 }
+
+.series-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #111827;
+  color: #fff;
+
+  .series-details {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .series-poster {
+    flex-shrink: 0;
+
+    img {
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .details-text {
+    flex: 1;
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .genres {
+      font-size: 0.95rem;
+      color: #bbb;
+      margin-bottom: 0.25rem;
+    }
+
+    .release-runtime {
+      font-size: 0.95rem;
+      color: #bbb;
+      margin-bottom: 1rem;
+    }
+
+    .overview {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .cast-section {
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cast-list {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cast-member {
+      text-align: center;
+      width: 112px;
+
+      .cast-photo {
+        border-radius: 0.25rem;
+        object-fit: cover;
+        margin-bottom: 0.5rem;
+      }
+
+      .no-image {
+        background: #333;
+        color: #888;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .cast-name {
+        font-size: 0.9rem;
+        font-weight: bold;
+      }
+
+      .cast-character {
+        font-size: 0.8rem;
+        color: #bbb;
+      }
+    }
+  }
+
+  .trailer-section {
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .trailer-video {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    }
+  }
+}
