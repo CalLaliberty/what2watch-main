@@ -1,23 +1,18 @@
 "use client";
 
-// React imports
 import React, { useState } from "react";
-// Nextjs imports
 import Link from "next/link";
 import Image from "next/image";
+
+import { MainSearchBar } from "@/app/ui/mainSearchBar";
 
 export default function MainNavigation() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav
-      className="border-b border-gray-700 px-4 py-2 flex items-center justify-between text-gray-100"
-      style={{
-        background: "linear-gradient(to bottom right, #0d1b2a, #1b263b)",
-      }}
-    >
-      {/* Logo placeholder */}
-      <div className="w-[65px] h-[65px]  overflow-hidden flex items-center justify-center">
+    <nav className="navbar">
+      {/* Left: Logo */}
+      <div className="logo">
         <Link href="/" className="flex items-center">
           <Image
             src="/images/logo.png"
@@ -29,29 +24,27 @@ export default function MainNavigation() {
         </Link>
       </div>
 
-      {/* Desktop Menu */}
-      <ul className="hidden md:flex space-x-6 items-center">
-        <li>
-          <Link
-            href="/"
-            className="text-gray-100 hover:text-gray-300 transition"
-          >
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/about"
-            className="text-gray-100 hover:text-gray-300 transition"
-          >
-            About
-          </Link>
-        </li>
-      </ul>
+      {/* Center: Search bar - takes most space on desktop */}
+      <div className="search-container">
+        <MainSearchBar />
+      </div>
+
+      {/* Right: Desktop menu links */}
+      <div className="menu">
+        <Link href="/" className="text-gray-100 hover:text-gray-300 transition">
+          Home
+        </Link>
+        <Link
+          href="/about"
+          className="text-gray-100 hover:text-gray-300 transition"
+        >
+          About
+        </Link>
+      </div>
 
       {/* Mobile Hamburger */}
       <button
-        className="md:hidden flex items-center"
+        className="mobile-hamburger"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle menu"
       >
@@ -70,33 +63,40 @@ export default function MainNavigation() {
         </svg>
       </button>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu + Search */}
       {menuOpen && (
-        <ul
-          className="absolute top-14 left-0 w-full text-gray-100 border-t border-gray-700 flex flex-col items-center md:hidden z-10 mt-6"
+        <div
+          className="absolute top-14 left-0 w-full text-gray-100 border-t border-gray-700 md:hidden z-20 mt-6"
           style={{
             background: "linear-gradient(to bottom right, #0d1b2a, #1b263b)",
           }}
         >
-          <li className="w-full text-center py-2">
-            <Link
-              href="/"
-              className="block hover:text-gray-300 transition"
-              onClick={() => setMenuOpen(false)}
-            >
-              Home
-            </Link>
-          </li>
-          <li className="w-full text-center py-2">
-            <Link
-              href="/about"
-              className="block hover:text-gray-300 transition"
-              onClick={() => setMenuOpen(false)}
-            >
-              About
-            </Link>
-          </li>
-        </ul>
+          <ul className="flex flex-col items-center space-y-2 py-2">
+            <li className="w-full text-center py-2">
+              <Link
+                href="/"
+                className="block hover:text-gray-300 transition"
+                onClick={() => setMenuOpen(false)}
+              >
+                Home
+              </Link>
+            </li>
+            <li className="w-full text-center py-2">
+              <Link
+                href="/about"
+                className="block hover:text-gray-300 transition"
+                onClick={() => setMenuOpen(false)}
+              >
+                About
+              </Link>
+            </li>
+          </ul>
+
+          {/* Mobile Search Bar - full width with padding */}
+          <div className="px-4 pb-4">
+            <MainSearchBar />
+          </div>
+        </div>
       )}
     </nav>
   );
