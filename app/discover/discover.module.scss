@@ -259,3 +259,14 @@
     background-position: 400px 0;
   }
 }
+
+.horizontalScroll {
+  cursor: grab;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.dragging {
+  cursor: grabbing;
+  user-select: none;
+}

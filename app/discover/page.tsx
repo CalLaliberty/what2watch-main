@@ -34,6 +34,16 @@ export default function DiscoverPage() {
     "Top Rated TV Shows",
     "Popular Movies",
     "Popular TV Shows",
+    "New Releases",
+    "Anime & Animated TV Shows",
+    "Action & Adventure",
+    "Comedy",
+    "Crime & Thriller",
+    "Documentaries",
+    "Family & Kids",
+    "Horror",
+    "Romance",
+    "Sci-Fi & Fantasy",
   ];
 
   const [categoryData, setCategoryData] = useState<Record<string, TMDBItem[]>>(
@@ -188,6 +198,36 @@ export default function DiscoverPage() {
   );
 }
 
+// Drag scroll hook
+function useDragScroll<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    isDragging.current = true;
+    startX.current = e.clientX;
+    scrollStart.current = ref.current.scrollLeft;
+    ref.current.classList.add(styles.dragging);
+    e.preventDefault();
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !ref.current) return;
+    const delta = e.clientX - startX.current;
+    ref.current.scrollLeft = scrollStart.current - delta;
+  };
+
+  const onMouseUpOrLeave = () => {
+    isDragging.current = false;
+    if (ref.current) ref.current.classList.remove(styles.dragging);
+  };
+
+  return { ref, onMouseDown, onMouseMove, onMouseUpOrLeave };
+}
+
 function HorizontalSection({
   title,
   items,
@@ -199,7 +239,12 @@ function HorizontalSection({
   handleScroll: (el: HTMLDivElement | null, dir: "left" | "right") => void;
   loading: boolean;
 }) {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const {
+    ref: scrollRef,
+    onMouseDown,
+    onMouseMove,
+    onMouseUpOrLeave,
+  } = useDragScroll<HTMLDivElement>();
 
   return (
     <section className={styles.categorySection}>
@@ -213,7 +258,14 @@ function HorizontalSection({
           <FiChevronLeft />
         </button>
 
-        <div className={styles.horizontalScroll} ref={scrollRef}>
+        <div
+          className={styles.horizontalScroll}
+          ref={scrollRef}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUpOrLeave}
+          onMouseLeave={onMouseUpOrLeave}
+        >
           {loading ? (
             Array.from({ length: 20 }).map((_, i) => <SkeletonCard key={i} />)
           ) : items.length ? (
