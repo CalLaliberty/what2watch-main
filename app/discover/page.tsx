@@ -129,13 +129,15 @@ export default function DiscoverPage() {
     <main className={styles.container}>
       {/* Filters */}
       <section className={styles.filters}>
-        <input
-          type="text"
-          placeholder="Search movies or TV shows..."
-          className={styles.searchInput}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div className={styles.searchBar}>
+          <input
+            type="text"
+            placeholder="Search movies or TV shows..."
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
         <select
           className={styles.filterSelect}
           value={mediaType}

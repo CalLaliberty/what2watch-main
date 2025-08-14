@@ -4,53 +4,53 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+// React Icons
+import { FiInfo, FiCompass } from "react-icons/fi";
+// UI Imports
 import { MainSearchBar } from "@/app/ui/mainSearchBar";
 
 export default function MainNavigation() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar flex items-center justify-between px-4 py-2">
       {/* Left: Logo */}
-      <div className="logo">
+      <div className="logo flex-shrink-0">
         <Link href="/" className="flex items-center">
           <Image
             src="/images/logo.png"
             alt="Logo"
-            width={65}
-            height={65}
+            width={50}
+            height={50}
             className="object-contain"
           />
         </Link>
       </div>
 
-      {/* Center: Search bar - takes most space on desktop */}
-      <div className="search-container">
+      {/* Center: Search bar */}
+      <div className="flex-1 mx-4">
         <MainSearchBar />
       </div>
 
       {/* Right: Desktop menu links */}
-      <div className="menu">
-        <Link href="/" className="text-gray-100 hover:text-gray-300 transition">
-          Home
-        </Link>
+      <div className="hidden md:flex space-x-6 items-center">
         <Link
           href="/about"
-          className="text-gray-100 hover:text-gray-300 transition"
+          className="flex items-center gap-1 text-gray-100 hover:text-gray-300 transition"
         >
-          About
+          <FiInfo className="text-3xl transition hover:text-red-600 hover:drop-shadow-[0_0_20px_rgba(229,9,20,0.6)]" />
         </Link>
         <Link
           href="/discover"
-          className="text-gray-100 hover:text-gray-300 transition"
+          className="flex items-center gap-1 text-gray-100 hover:text-gray-300 transition"
         >
-          Discover
+          <FiCompass className="text-3xl transition hover:text-red-600 hover:drop-shadow-[0_0_20px_rgba(229,9,20,0.6)]" />
         </Link>
       </div>
 
       {/* Mobile Hamburger */}
       <button
-        className="mobile-hamburger"
+        className="md:hidden ml-2"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle menu"
       >
@@ -69,7 +69,7 @@ export default function MainNavigation() {
         </svg>
       </button>
 
-      {/* Mobile Menu + Search */}
+      {/* Mobile Menu */}
       {menuOpen && (
         <div
           className="absolute top-14 left-0 w-full text-gray-100 border-t border-gray-700 md:hidden z-20 mt-6"
@@ -77,8 +77,8 @@ export default function MainNavigation() {
             background: "linear-gradient(to bottom right, #0d1b2a, #1b263b)",
           }}
         >
-          <ul className="flex flex-col items-center space-y-2 py-2">
-            <li className="w-full text-center py-2">
+          <ul className="flex flex-col items-center space-y-2 py-4">
+            <li>
               <Link
                 href="/"
                 className="block hover:text-gray-300 transition"
@@ -87,30 +87,27 @@ export default function MainNavigation() {
                 Home
               </Link>
             </li>
-            <li className="w-full text-center py-2">
+            <li>
               <Link
                 href="/about"
-                className="block hover:text-gray-300 transition"
+                className="flex items-center gap-2 hover:text-gray-300 transition"
                 onClick={() => setMenuOpen(false)}
               >
+                <FiInfo className="text-lg" />
                 About
               </Link>
             </li>
-            <li className="w-full text-center py-2">
+            <li>
               <Link
                 href="/discover"
-                className="block hover:text-gray-300 transition"
+                className="flex items-center gap-2 hover:text-gray-300 transition"
                 onClick={() => setMenuOpen(false)}
               >
+                <FiCompass className="text-lg" />
                 Discover
               </Link>
             </li>
           </ul>
-
-          {/* Mobile Search Bar - full width with padding */}
-          <div className="px-4 pb-4">
-            <MainSearchBar />
-          </div>
         </div>
       )}
     </nav>

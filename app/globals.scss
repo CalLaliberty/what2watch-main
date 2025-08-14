@@ -1,5 +1,63 @@
+// globals.scss
+
+/* ========================================================================== 
+   Theme Variables
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --color-bg: #141414; // Main page background
+  --color-bg-alt: #1c1c1c; // Cards, panels, dropdowns
+  --color-bg-hover: #2a2a2a; // Hover effects for cards/buttons
+
+  /* Text */
+  --color-text: #ffffff; // Primary text
+  --color-text-muted: #b3b3b3; // Secondary / muted text
+  --color-text-hover: #e5e5e5; // On hover highlights
+
+  /* Accents */
+  --color-primary: #e50914; // Netflix red for buttons, highlights
+  --color-primary-light: #ff3333;
+  --color-secondary: #f5c518; // Optional accent like yellow ratings
+
+  /* Borders / Dividers */
+  --color-border: #333333; // Subtle borders between sections
+
+  /* Fonts */
+  --font-base: "Helvetica Neue", Arial, sans-serif;
+
+  /* Buttons */
+  --button-bg: #2a2a2a; // Button background
+  --button-bg-hover: #ff3333; // Button hover background
+  --button-text: #ff3333; // Button text color
+}
+
+[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-text: #000000;
+}
+
+/* Optional: SCSS variables so you can use them in build-time SCSS too */
+$primary: var(--color-primary);
+$primary-light: var(--color-primary-light);
+$secondary: var(--color-secondary);
+$bg: var(--color-bg);
+$bg-alt: var(--color-bg-alt);
+$text: var(--color-text);
+$text-muted: var(--color-text-muted);
+$font-base: var(--font-base);
+
+.container-bg {
+  background-color: var(--color-bg);
+  color: #fff;
+  font-family: "Arial", sans-serif;
+}
+
+body[data-theme="dark"] {
+  background-color: var(--color-bg);
+}
+
 /* ==========================================================================
-   Hero Banner Styles
+   Hero Banner Style 
    ========================================================================== */
 .hero-banner {
   position: relative;
@@ -429,6 +487,9 @@
    Navbar Styles
    ========================================================================== */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   border-bottom: 1px solid #374151;
   background: linear-gradient(to bottom right, #0d1b2a, #1b263b);
   padding: 0.5rem 1rem;
@@ -628,6 +689,32 @@
     font-size: 0.75rem;
     color: #9ca3af;
   }
+}
+
+/* ==========================================================================
+   App Background & Base Styles
+   ========================================================================== */
+
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+.button {
+  background-color: var(--button-bg);
+  border: red solid 1px;
+  color: var(--button-text);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+  }
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: red !important;
 }
 
 /* ==========================================================================

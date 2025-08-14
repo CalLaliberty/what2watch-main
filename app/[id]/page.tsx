@@ -39,26 +39,14 @@ export default async function MoviePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const API_KEY = process.env.TMDB!;
   const { id } = await params;
 
-  // Fetch movie details or fallback to TV show
-  let detailsRes = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=credits,videos`,
-    { next: { revalidate: 3600 } }
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/details/${id}`
   );
+  const detailsData = await res.json();
 
-  let isMovie = true;
-
-  if (detailsRes.status === 404) {
-    detailsRes = await fetch(
-      `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&append_to_response=credits,videos`,
-      { next: { revalidate: 3600 } }
-    );
-    isMovie = false;
-  }
-
-  if (!detailsRes.ok) {
+  if (detailsData.error) {
     return (
       <div className="p-6 text-center text-red-500">
         Failed to load details for id: {id}
@@ -66,7 +54,8 @@ export default async function MoviePage({
     );
   }
 
-  const details: Details = await detailsRes.json();
+  const details: Details = detailsData;
+  const isMovie = detailsData.isMovie;
 
   const trailer = details.videos.results.find(
     (vid) => vid.type === "Trailer" && vid.site === "YouTube"
@@ -77,10 +66,6 @@ export default async function MoviePage({
 
   return (
     <div className="movie-page">
-      {/* <HeroBanner
-        backdropPath={details.backdrop_path}
-        rating={details.vote_average}
-      /> */}
       <main className="movie-details">
         {/* Poster */}
         {details.poster_path && (

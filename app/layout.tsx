@@ -34,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        data-theme="dark"
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <MainNavigation />

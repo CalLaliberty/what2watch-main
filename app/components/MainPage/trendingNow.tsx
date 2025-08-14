@@ -106,9 +106,9 @@ export default function TrendingNow() {
   }, []);
 
   return (
-    <section className="w-full px-4 pt-0 pb-12 sm:pb-20 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 border-t border-gray-700">
+    <section className="w-full px-4 pt-0 pb-12 sm:pb-20 container-bg">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 mt-10">
+        <h2 className="text-3xl md:text-5xl font-bold mb- mt-10 ">
           Trending Now
         </h2>
         <p className="text-lg md:text-xl text-gray-300 mb-10">

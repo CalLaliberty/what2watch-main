@@ -13,7 +13,6 @@ const categories: Record<string, string> = {
   "Popular TV Shows": "/tv/popular",
 };
 
-// The response for each category can contain movies or series, so type the array elements as either:
 type TmdbItem = TmdbMovie | TmdbSeries;
 
 export default async function handler(
@@ -34,7 +33,17 @@ export default async function handler(
         if (!response.ok) throw new Error(`Failed to fetch ${title}`);
 
         const data = (await response.json()) as { results: TmdbItem[] };
-        results[title] = data.results || [];
+
+        // Add media_type manually for non-trending categories
+        const resultsWithType: TmdbItem[] = data.results.map((item) => {
+          if (title.includes("Movie"))
+            return { ...(item as TmdbMovie), media_type: "movie" };
+          if (title.includes("TV"))
+            return { ...(item as TmdbSeries), media_type: "tv" };
+          return item as TmdbItem; // Trending already has media_type
+        });
+
+        results[title] = resultsWithType;
       })
     );
 
