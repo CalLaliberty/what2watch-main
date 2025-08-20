@@ -24,7 +24,7 @@ export default function MainChatApp() {
     }
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const newMessage: Message = {
@@ -36,14 +36,30 @@ export default function MainChatApp() {
     setMessages((prev) => [...prev, newMessage]);
     setInput("");
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input.trim() }),
+      });
+
+      const data = await res.json();
+
       const aiMessage: Message = {
         id: messages.length + 2,
         role: "ai",
-        text: "Here's a movie/TV suggestion based on your message: ...",
+        text: data.reply,
       };
       setMessages((prev) => [...prev, aiMessage]);
-    }, 1000);
+    } catch (error) {
+      console.error(error);
+      const aiMessage: Message = {
+        id: messages.length + 2,
+        role: "ai",
+        text: "Sorry, something went wrong.",
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
