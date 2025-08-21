@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { BiMessageSquareDots } from "react-icons/bi";
 import { IoChatboxEllipses } from "react-icons/io5";
 
 interface Message {
@@ -13,6 +14,7 @@ export default function MainChatApp() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [type, setType] = useState<"movie" | "tv">("movie");
 
   useEffect(() => {
     const container = messagesContainerRef.current;
@@ -28,25 +30,24 @@ export default function MainChatApp() {
     if (!input.trim()) return;
 
     const newMessage: Message = {
-      id: messages.length + 1,
+      id: Date.now(),
       role: "user",
       text: input.trim(),
     };
-
-    setMessages((prev) => [...prev, newMessage]);
+    const updatedMessages = [...messages, newMessage];
+    setMessages(updatedMessages);
     setInput("");
 
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input.trim() }),
+        body: JSON.stringify({ messages: updatedMessages, type }), // use state 'type' here
       });
 
       const data = await res.json();
-
       const aiMessage: Message = {
-        id: messages.length + 2,
+        id: Date.now(),
         role: "ai",
         text: data.reply,
       };
@@ -54,7 +55,7 @@ export default function MainChatApp() {
     } catch (error) {
       console.error(error);
       const aiMessage: Message = {
-        id: messages.length + 2,
+        id: Date.now(),
         role: "ai",
         text: "Sorry, something went wrong.",
       };
@@ -74,7 +75,7 @@ export default function MainChatApp() {
           What2Watch AI
         </h3>
         <span className="text-sm text-[var(--color-text-muted)]">
-          Ask for movie/TV ideas
+          Ask me what to watch!
         </span>
       </div>
 
@@ -104,20 +105,21 @@ export default function MainChatApp() {
       </div>
 
       {/* Input */}
-      <div className="px-3 py-2 border-t border-[var(--color-border)] flex items-center gap-2 flex-wrap sm:flex-nowrap">
+      <div className="px-3 py-2 border-t border-[var(--color-border)] flex items-center gap-2">
         <input
           type="text"
-          placeholder="Ask me about a movie or TV show..."
-          className="flex-1 min-w-[60%] px-3 py-2 rounded-xl bg-[var(--color-bg)] text-[var(--color-text)] placeholder-[var(--color-text-muted)] outline-none border border-[var(--color-border)] focus:border-[var(--color-primary)]"
+          placeholder="Stop scrolling, Netflix and ask me what to watch!"
+          className="flex-1 min-w-0 px-2 py-2 sm:px-3 rounded-xl text-sm sm:text-base bg-[var(--color-bg)] text-[var(--color-text)] placeholder-[var(--color-text-muted)] outline-none border border-[var(--color-border)] focus:border-[var(--color-primary)]"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+
         <button
-          className="p-2 rounded-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-[var(--color-text)] transition flex-shrink-0"
           onClick={handleSend}
+          className="p-2 sm:p-3 rounded-full bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] transition-colors shrink-0"
         >
-          <IoChatboxEllipses size={22} />
+          <BiMessageSquareDots size={20} />
         </button>
       </div>
     </div>
